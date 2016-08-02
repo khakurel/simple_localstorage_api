@@ -1,0 +1,20 @@
+{
+  "extends": "standard",
+  "parser": "babel-eslint",
+  "env": {
+    "es6": true,
+    "browser": true,
+    "mocha": true,
+    "node": true
+  },
+  "rules": {
+    "quotes": [2, "single", "avoid-escape"],
+    "new-cap": 0,
+    "no-extend-native":0,
+    "no-console": 0,
+    "no-underscore-dangle": 0,
+    "no-unused-expressions": 0,
+    "no-mixed-requires": 0,
+    "no-eval": 0
+  }
+}

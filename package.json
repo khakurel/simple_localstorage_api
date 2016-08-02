@@ -1,0 +1,63 @@
+{
+  "name": "simple_localstorage_api",
+  "version": "1.0.0",
+  "description": "Simple LocalStorage Api",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm run build:commonjs && npm run build:umd && npm run build:umd:min && npm run build:es",
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
+    "build:umd": "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack",
+    "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack",
+    "clean": "./node_modules/.bin/rimraf lib dist es",
+    "lint": "./node_modules/.bin/eslint webpack.config.babel.js src test",
+    "prepublish": "npm run lint && npm run test && npm run clean && npm run build",
+    "test": "cross-env NODE_ENV=test ./node_modules/karma/bin/karma start  --browsers PhantomJS",
+    "test:watch": "npm run test -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khakurel/simple_localstorage_api.git"
+  },
+  "keywords": [
+    "localstorage"
+  ],
+  "author": "Suraj Khakurel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/khakurel/simple_localstorage_api/issues"
+  },
+  "homepage": "https://github.com/khakurel/simple_localstorage_api#readme",
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-core": "^6.11.4",
+    "babel-eslint": "^6.1.2",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "chai": "^3.5.0",
+    "cross-env": "^2.0.0",
+    "eslint": "^3.1.1",
+    "eslint-config-standard": "^5.3.5",
+    "eslint-plugin-promise": "^2.0.0",
+    "eslint-plugin-standard": "^2.0.0",
+    "expect": "^1.20.2",
+    "istanbul": "^0.3.13",
+    "istanbul-instrumenter-loader": "^0.1.2",
+    "karma": "^1.1.2",
+    "mocha": "^2.5.3",
+    "mocha-loader": "^0.7.1",
+    "mocha-lcov-reporter": "^1.2.0",
+    "karma-coverage": "^0.2.7",
+    "karma-mocha": "^0.1.10",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-spec-reporter": "0.0.18",
+    "karma-webpack": "^1.5.0",
+    "phantomjs-polyfill": "0.0.1",
+    "rimraf": "^2.5.4",
+    "webpack": "^1.13.1"
+  },
+  "dependencies": {
+    "lodash": "^4.14.1",
+    "moment": "^2.14.1"
+  }
+}
