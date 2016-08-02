@@ -72,7 +72,7 @@ export class Store {
         }
         if (object._expires_at) { //check if data has expire_at
 
-            var expiresAt = object._expires_at;
+            let expiresAt = object._expires_at;
             if (_.isString(expiresAt)) {
                 expiresAt = new Date(expiresAt);
             }
@@ -116,13 +116,14 @@ export class Store {
         if (_.isNumber(expireAfter)) {
             object._expires_at = moment().add(expireAfter, 'minutes').toDate();
         } else {
-            var expire = expireAfter.split('.');
+            let expire = expireAfter.split('.');
             object._expires_at = moment().add(parseInt(expire[0]), expire[1]).toDate();
         }
     }
 
     /**
-     * remove the data from cache
+     * remove store item by key
+     * @param key
      */
     clear(key) {
         if (this.hasStore(key)) {
@@ -133,6 +134,12 @@ export class Store {
         }
     }
 
+    /**
+     * add item to a colleciton of items
+     * @param key
+     * @param data
+     * @returns {{}|*}
+     */
     addItem(key, data) {
         const object = this.read(key);
         object.items = (object.items || []);
@@ -141,6 +148,12 @@ export class Store {
         return object;
     }
 
+    /**
+     * Remove Item from collection
+     * @param key
+     * @param callback
+     * @returns {{}|*}
+     */
     removeItem(key, callback) {
         const object = this.read(key);
         _.remove(object.items, callback);
@@ -148,6 +161,14 @@ export class Store {
         return object;
     }
 
+
+    /**
+     * Update Or Insert item to the collection
+     * @param key
+     * @param data
+     * @param callback
+     * @returns {{}}
+     */
     updateItem(key, data, callback) {
         const object = this.read(key),
             item = _.find(object.items, callback);
@@ -160,7 +181,11 @@ export class Store {
         return update;
     }
 
-
+    /**
+     * Find item from keys
+     * @param key
+     * @param callback
+     */
     findItem(key, callback) {
         const object = this.read(key);
         return _.find(object.items, callback);
@@ -176,9 +201,15 @@ export class Store {
 
     }
 
+    /**
+     * get list
+     * @returns {{memory: ({}|*), storage: (Storage|*)}}
+     */
+
     list() {
         return {memory: this._data, storage: this.localStorage}
     }
+
 
     toJSON(data = '{}') {
         data = data || '{}';
