@@ -1,9 +1,9 @@
-var webpack = require("webpack");
+var webpack = require('webpack');
 module.exports = function(config) {
     config.set({
 
         files: [
-            // all files ending in "test"
+            // all files ending in 'test'
             './node_modules/phantomjs-polyfill/bind-polyfill.js',
             'test/test.js'
             // each file acts as entry point for the webpack configuration
@@ -39,9 +39,9 @@ module.exports = function(config) {
             },
             resolve: {
                 modulesDirectories: [
-                    "",
-                    "src",
-                    "node_modules"
+                    '',
+                    'src',
+                    'node_modules'
                 ]
             }
         },
@@ -52,12 +52,12 @@ module.exports = function(config) {
         },
 
         plugins: [
-            require("karma-webpack"),
-            require("istanbul-instrumenter-loader"),
-            require("karma-mocha"),
-            require("karma-coverage"),
-            require("karma-phantomjs-launcher"),
-            require("karma-spec-reporter")
+            require('karma-webpack'),
+            require('istanbul-instrumenter-loader'),
+            require('karma-mocha'),
+            require('karma-coverage'),
+            require('karma-phantomjs-launcher'),
+            require('karma-spec-reporter')
         ],
 
         browsers: ['PhantomJS']

@@ -3,12 +3,12 @@
  *
  */
 
-import _ from 'lodash'
-import moment from 'moment'
+import _ from 'lodash';
+import moment from 'moment';
 
 export class Store {
     constructor(options = {}) {
-        this.storage = options.useLocal !== false;
+        this.storage = options.useLocal !== false ;
         this._data = {};
         this.localStorage = window.localStorage;
     }
@@ -16,7 +16,6 @@ export class Store {
 
     /**
      * check if using local stroage
-     * @param
      * @returns {boolean|*}
      */
     hasStore() {
