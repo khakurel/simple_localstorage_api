@@ -51,15 +51,6 @@ module.exports = function(config) {
             noInfo: true
         },
 
-        plugins: [
-            require('karma-webpack'),
-            require('istanbul-instrumenter-loader'),
-            require('karma-mocha'),
-            require('karma-coverage'),
-            require('karma-phantomjs-launcher'),
-            require('karma-spec-reporter')
-        ],
-
         browsers: ['PhantomJS']
     });
 };
