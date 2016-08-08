@@ -2,6 +2,7 @@ import chai, {expect}  from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import moment from 'moment';
+import _ from 'lodash';
 import {Store}  from '../../src/index';
 
 chai.use(sinonChai);
@@ -141,6 +142,84 @@ describe('Store', () => {
 
 
         })
+
+    });
+
+    describe('#write', () =>{
+        let store;
+        let data;
+
+        beforeEach(()=> {
+            store = new Store();
+            data = {id: 1, name: 'test'};
+        });
+
+        it('should write value to store with key', () => {
+
+
+            sinon.spy(store.localStorage, 'setItem');
+            const expected = store.write('mykey', data);
+
+            expect(store.localStorage.setItem).to.have.been.calledWith('mykey', JSON.stringify(data));
+            expect(expected).to.deep.equal(data);
+            store.localStorage.setItem.restore();
+
+        });
+
+        it('should set expire date', () => {
+
+
+            sinon.spy(store.localStorage, 'setItem');
+            sinon.spy(store, 'setExpire');
+
+
+            const expected = store.write('mykey', data , '1.months');
+
+            expect(store.setExpire).to.have.been.calledWith(data, '1.months');
+            expect(store.localStorage.setItem).to.have.been.calledWith('mykey', JSON.stringify(data));
+            expect(expected).to.deep.equal(data);
+
+            store.localStorage.setItem.restore();
+            store.setExpire.restore();
+        });
+
+        it('should set data to _data', () => {
+
+            sinon.stub(store, 'hasStore').returns(false);
+            sinon.spy(store.localStorage, 'setItem');
+
+            const expected = store.write('mykey', data);
+            expect(store.localStorage.setItem).not.to.have.been.called;
+            expect(store._data.mykey).to.deep.equal(data);
+            expect(expected).to.deep.equal(data);
+
+            store.localStorage.setItem.restore();
+
+
+        })
+
+
+    });
+
+    describe('setExpire',  () => {
+        let store;
+        let data;
+
+        beforeEach(()=> {
+            store = new Store();
+            data = {id: 1, name: 'test'};
+        });
+
+        it('should set expires at when number', function () {
+            store.setExpire(data, 2);
+            expect(data._expires_at.toString()).to.equal(moment().add(2, 'minutes').toDate().toString());
+        });
+
+        it('should set expires at when string', function () {
+            store.setExpire(data, '2.months');
+            expect(data._expires_at.toString()).to.equal(moment().add(2, 'months').toDate().toString());
+        });
+
 
     });
 

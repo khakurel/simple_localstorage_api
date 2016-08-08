@@ -8,7 +8,7 @@ import moment from 'moment';
 
 export class Store {
     constructor(options = {}) {
-        this.storage = options.useLocal !== false ;
+        this.storage = options.useLocal !== false;
         this._data = {};
         this.localStorage = window.localStorage;
     }
@@ -98,10 +98,11 @@ export class Store {
         if (expireAfter) { // if the  options has expire_after create the date object and assigns to object
             this.setExpire(object, expireAfter);
         }
-        if (this.hasStore(key)) {
-            return this.localStorage.setItem(key, JSON.stringify(object));
+        if (this.hasStore()) {
+            this.localStorage.setItem(key, JSON.stringify(object));
+        } else {
+            this._data[key] = object;
         }
-        this._data[key] = object;
         return object;
 
     }

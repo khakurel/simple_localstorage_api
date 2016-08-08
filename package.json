@@ -1,6 +1,6 @@
 {
   "name": "simple_localstorage_api",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Simple LocalStorage Api",
   "main": "lib/index.js",
   "scripts": {
