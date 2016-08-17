@@ -1,7 +1,7 @@
 # Simple LocalStorage API
 
 
-_Better API to for storage data in localStorage_
+_Better API to for storage data in localStorage, sessionStorage or Memory_
 
 _Support for an expire date_
 
@@ -18,9 +18,19 @@ npm install --save simple_localstorage_api
 
 ```js
 import { Store } from 'simple_localstorage_api';
-const store = new Store();
+const store = new Store(); // default is window.localStorage
 
 store.set('key', {data,...})
+```
+
+###Use store as  session Storage
+```js
+const store = new Store({type: 'session'}) // use window.sessionStorage
+```
+
+###Use store as  Memory Storage
+```js
+const store = new Store({type: 'memory'})
 ```
 
 ###Insert a record by key

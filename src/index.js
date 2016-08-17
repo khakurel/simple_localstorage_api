@@ -6,28 +6,54 @@
 import _ from 'lodash';
 import moment from 'moment';
 
+export class MemoryStore {
+
+    constructor() {
+        this._data = {};
+        this.type ='MemoryStore';
+
+    }
+
+    setItem(key, value) {
+        this._data[key] = value;
+    }
+
+    getItem(key) {
+        return this._data[key];
+    }
+
+    removeItem(key) {
+        this._data[key] = null;
+        delete this._data[key];
+    }
+
+    clear() {
+        this._data = {};
+    }
+
+
+}
+
+
 export class Store {
     constructor(options = {}) {
-        this.storage = options.useLocal !== false;
-        this._data = {};
-        this.localStorage = window.localStorage;
+
+        const stores = {
+            session: window.sessionStorage,
+            local: window.localStorage,
+            memory: new MemoryStore()
+        }, type = (options.type || 'local');
+
+        this.storage = stores[type];
+
     }
 
-
-    /**
-     * check if using local stroage
-     * @returns {boolean|*}
-     */
-    hasStore() {
-        return this.storage
-    }
 
     /**
      * reset storage
      */
     reset() {
-        this.localStorage.clear();
-        return (this._data = {});
+        this.storage.clear();
     }
 
     /**
@@ -63,12 +89,8 @@ export class Store {
      * @return Object
      */
     read(key) {
-        let object = {};
-        if (this.hasStore(key)) {
-            object = this.toJSON(this.localStorage.getItem(key));
-        } else {
-            object = this._data[key] || {};
-        }
+        const object = this.toJSON(this.storage.getItem(key));
+
         if (object._expires_at) { //check if data has expire_at
 
             let expiresAt = object._expires_at;
@@ -98,11 +120,9 @@ export class Store {
         if (expireAfter) { // if the  options has expire_after create the date object and assigns to object
             this.setExpire(object, expireAfter);
         }
-        if (this.hasStore()) {
-            this.localStorage.setItem(key, JSON.stringify(object));
-        } else {
-            this._data[key] = object;
-        }
+        console.log('dd',  this.storage)
+        this.storage.setItem(key, JSON.stringify(object));
+
         return object;
 
     }
@@ -126,12 +146,7 @@ export class Store {
      * @param key
      */
     clear(key) {
-        if (this.hasStore(key)) {
-            this.localStorage.removeItem(key);
-        } else {
-            this._data[key] = null;
-            delete this._data[key];
-        }
+        this.storage.removeItem(key);
     }
 
     /**
@@ -203,11 +218,11 @@ export class Store {
 
     /**
      * get list
-     * @returns {{memory: ({}|*), storage: (Storage|*)}}
+     * @returns  (Storage)
      */
 
     list() {
-        return {memory: this._data, storage: this.localStorage}
+        return  this.storage
     }
 
 
