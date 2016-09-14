@@ -10,7 +10,7 @@ export class MemoryStore {
 
     constructor() {
         this._data = {};
-        this.type ='MemoryStore';
+        this.type = 'MemoryStore';
 
     }
 
@@ -120,7 +120,6 @@ export class Store {
         if (expireAfter) { // if the  options has expire_after create the date object and assigns to object
             this.setExpire(object, expireAfter);
         }
-        console.log('dd',  this.storage)
         this.storage.setItem(key, JSON.stringify(object));
 
         return object;
@@ -222,7 +221,7 @@ export class Store {
      */
 
     list() {
-        return  this.storage
+        return this.storage
     }
 
 
@@ -231,7 +230,6 @@ export class Store {
         return JSON.parse(data);
     }
 }
-
 
 
 
